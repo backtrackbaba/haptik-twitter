@@ -1,0 +1,21 @@
+{% macro display_twitter_card(user, tweet) %}
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-1 text-center">
+                    <img src="{{ user.gravatar_url }}"
+                         class="rounded-circle" width="50px"/>
+                </div>
+                <div class="col-md-11 text-left">
+                    <h5 class="card-title font-weight-bold">{{ user.name }}
+                        <span class="text-muted h6 pl-0">{{ '@' + user.username }}</span>
+                        <span class="text-muted h6 px-1"> {{ tweet.created_at | get_relative_time }}</span>
+                    </h5>
+                    <p class="card-text">{{ tweet.body }}</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endmacro %}
