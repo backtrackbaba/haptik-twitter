@@ -1,0 +1,33 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Haptik Twitter</title>
+    <meta name="description" content="Haptik Twitter">
+    <meta name="author" content="Saiprasd Balasubramanian">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/vendor/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/custom/site.css') }}">
+    {% block page_css %}{% endblock %}
+</head>
+
+<body>
+{% block page_content_before %}{% endblock %}
+
+
+<div class="main">
+    {% block page_content %}{% endblock %}
+</div>
+
+{% block page_content_after %}{% endblock %}
+
+<script src="{{ url_for('static', filename='assets/js/vendor/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/vendor/popper.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/vendor/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/custom/site.js') }}"></script>
+
+{% block page_js %}{% endblock %}
+</body>
+</html>
