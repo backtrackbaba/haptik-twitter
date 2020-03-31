@@ -6,3 +6,10 @@
   line-height: 60px;
   background-color: #f5f5f5;
 }
+
+textarea {
+  box-sizing: border-box;
+  max-height: 160px;
+  min-height: 38px !important;
+  overflow-x: hidden;
+}

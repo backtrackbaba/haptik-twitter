@@ -1,0 +1,133 @@
+{% extends 'layouts/web.html' %}
+{% import "macros/common.html" as common with context %}
+
+
+
+{% block page_content %}
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-5">
+                <img src="{{ user.gravatar_url }}"
+                     class="rounded-circle" width="50%"/>
+            </div>
+
+            <div class="col-md-7">
+                <h1 class="font-weight-bold">{{ user.name }}
+                    <span class="text-muted h3 pl-0">{{ '@' + user.username }}</span>
+                    <br>
+                    <span class="text-muted h5 pl-0"> Member Since: {{ user.created_at | get_relative_time }}</span>
+                </h1>
+
+                {% if user.id == current_user.id %}
+                    <button type="button" class="btn btn-outline-secondary disabled" disabled>
+                        Follow
+                    </button>
+                {% elif not current_user.is_following(user) %}
+                    <button type="button" class="btn btn-outline-primary follow-btn"
+                            data-username="{{ user.username }}">Follow
+                    </button>
+                {% else %}
+                    <button type="button" class="btn btn-primary unfollow-btn"
+                            data-username="{{ user.username }}">Unfollow
+                    </button>
+                {% endif %}
+
+                <div class="tweet-section-header mt-5">
+                    <h1>User's Tweet:</h1>
+                    {% if tweets | length == 0 %}
+                        <span>Sorry, the user currently doesn't have any tweets!</span>
+                    {% else %}
+                        {% for tweet in tweets %}
+                            {{ common.display_twitter_card(user, tweet) }}
+                        {% endfor %}
+                    {% endif %}
+
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock %}
+
+
+
+{% block page_js %}
+    <script>
+        $(document).ready(function () {
+            $('.follow-btn').click(function (event) {
+                event.preventDefault();
+                let element = $(this);
+                let username = element.data("username");
+                console.log('username', username);
+                $.ajax({
+                    url: '/api/v1/' + username + '/follow',
+                    type: 'POST',
+                    data: {username: username},
+                    datatype: 'json',
+                    success: function (data) {
+                        console.log(data);
+                        element.html("Unfollow");
+                        element.removeClass('btn-outline-primary');
+                        element.addClass('btn-primary')
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        let error_code = jqXHR.status;
+                        let error_message = jqXHR.responseJSON.error_message;
+                        /* TODO: Add error class in textarea section */
+                        console.log('error_code', error_code);
+                        console.log('error_message', error_message);
+                        console.log('jqXHR', jqXHR);
+
+                        console.log('textStatus', textStatus);
+                        console.log('errorThrown', errorThrown);
+                    }
+                })
+            });
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('.unfollow-btn').click(function (event) {
+                event.preventDefault();
+                let element = $(this);
+                let username = element.data("username");
+                console.log('username', username);
+                $.ajax({
+                    url: '/api/v1/' + username + '/unfollow',
+                    type: 'POST',
+                    data: {username: username},
+                    datatype: 'json',
+                    success: function (data) {
+                        console.log(data);
+                        element.html("Follow");
+                        element.addClass('btn-outline-primary');
+                        element.addClass('follow-btn');
+                        element.removeClass('btn-primary');
+                        element.removeClass('unfollow-btn');
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        let error_code = jqXHR.status;
+                        let error_message = jqXHR.responseJSON.error_message;
+                        /* TODO: Add error class in textarea section */
+                        console.log('error_code', error_code);
+                        console.log('error_message', error_message);
+                        console.log('jqXHR', jqXHR);
+
+                        console.log('textStatus', textStatus);
+                        console.log('errorThrown', errorThrown);
+                    }
+                })
+            });
+        });
+
+    </script>
+{% endblock %}
+

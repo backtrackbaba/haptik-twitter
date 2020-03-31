@@ -5,7 +5,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary static-top">
         <div class="container">
-            <a class="navbar-brand" href="#">Start Bootstrap</a>
+            <a class="navbar-brand" href="#">Haptik Twitter</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                     aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -13,31 +13,55 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Home
+                        <a class="nav-link" href="{{ url_for('common.home') }}">Home
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/feed">Feed</a>
+                        <a class="nav-link" href="{{ url_for('dashboard.feed') }}">Feed</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/auth/login">Log in</a>
+                        <a class="nav-link" href="{{ url_for('dashboard.users') }}">Users</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/auth/sign-up">Sign up</a>
-                    </li>
+                    {% if current_user.is_anonymous %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('auth.login') }}">Log in</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('auth.sign_up') }}">Sign up</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('auth.logout') }}">Log out</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('dashboard.profile') }}" class="href">
+                                <img src="{{ current_user.gravatar_url }}"
+                                     class="rounded-circle" width="50px"/></a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
 
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
 {% endblock %}
 
 
 {% block page_content_after %}
-    <footer class="bg-dark footer">
-        <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
-        </div>
-    </footer>
+    {#    <footer class="bg-dark footer">#}
+    {#        <div class="container">#}
+    {#            <p class="m-0 text-center text-white">Made with ❤️ by Saiprasad Balasubramanian</p>#}
+    {#        </div>#}
+    {#    </footer>#}
 {% endblock %}

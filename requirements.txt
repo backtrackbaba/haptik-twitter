@@ -5,3 +5,6 @@ Flask-Migrate==2.5.3
 psycopg2-binary==2.8.4
 python-dotenv==0.12.0
 walrus==0.8.0
+flask-login==0.5.0
+flask-wtf==0.14.3
+boltons==20.1.0

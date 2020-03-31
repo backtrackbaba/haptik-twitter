@@ -1,14 +1,19 @@
 import click
 
+from src.models.tweet import Tweet
+from src.models.user import User
+
 
 def register(app):
     @app.cli.group()
-    def local():
-        """Translation and localization commands."""
+    def database():
+        """Database related commands"""
         pass
 
-    @local.command()
-    @click.argument('db')
-    def init(db):
-        """Initialize a new language."""
-        print("Hello World!!!" + db)
+    @database.command()
+    @click.argument('clean')
+    def clean(db):
+        """Cleans the database and gets back to square one"""
+        db.session.query(User).delete()
+        db.session.query(Tweet).delete()
+        db.session.commit()
