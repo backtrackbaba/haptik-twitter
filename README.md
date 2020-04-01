@@ -86,3 +86,10 @@ then `cd` into the project
 
 ### Create .env file using the sample.env
 
+### Setup the database
+
+`flask db upgrade`
+
+### Run the application
+
+`flask run`
